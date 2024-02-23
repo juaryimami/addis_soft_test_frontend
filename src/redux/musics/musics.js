@@ -1,5 +1,7 @@
 import { v4 as uuidv4 } from 'uuid';
-import { addMusicServer, getInitialMusics, removeMusicServer } from '../../services/musicStore';
+import {
+  addMusicServer, getInitialMusics, editMusicServer, removeMusicServer,
+} from '../../services/musicStore';
 
 // Inital State
 const initialState = [];
@@ -8,6 +10,7 @@ const initialState = [];
 const ADD_MUSIC = 'musicStore/musics/ADD_MUSIC';
 const REMOVE_MUSIC = 'musicStore/musics/REMOVE_MUSIC';
 const INIT_MUSICS = 'musicStore/musics/INIT_MUSIC';
+const EDIT_MUSIC = 'musicStore/musics/EDIT_MUSIC';
 
 // Action Creators
 export const addInitialMusics = () => async (dispatch) => {
@@ -34,6 +37,17 @@ export const addMusicAction = (title, author, category) => async (dispatch) => {
   });
 };
 
+export const editMusicAction = (id, newMusic) => async (dispatch) => {
+  await editMusicServer(id, newMusic);
+  dispatch({
+    type: EDIT_MUSIC,
+    payload: {
+      id,
+      newMusic,
+    },
+  });
+};
+
 export const removeMusicAction = (id) => async (dispatch) => {
   await removeMusicServer(id);
 
@@ -54,6 +68,12 @@ const musicsReducer = (state = initialState, action) => {
       return [...state, action.payload];
     case REMOVE_MUSIC:
       return state.filter((music) => music.item_id !== action.payload.item_id);
+    case EDIT_MUSIC: {
+      const { itemId, newMusic } = action.payload;
+      const updatedMusics = state.map((item) => (item.id === itemId
+        ? { ...item, ...newMusic } : item));
+      return updatedMusics;
+    }
     default:
       return state;
   }

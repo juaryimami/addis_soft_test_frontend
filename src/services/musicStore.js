@@ -27,6 +27,12 @@ export const addMusicServer = async (newMusic) => {
   return response.data;
 };
 
+export const editMusicServer = async (id, newMusic) => {
+  const updateUrl = `https://us-central1-bookstore-api-e63c8.cloudfunctions.net/bookstoreApi/apps/gKbdBULzeQgMvwW4IEc0/books/${id}`;
+  const response = await axios.put(updateUrl, newMusic);
+  return response.data;
+};
+
 export const removeMusicServer = async (id) => {
   const deleteURL = `https://us-central1-bookstore-api-e63c8.cloudfunctions.net/bookstoreApi/apps/gKbdBULzeQgMvwW4IEc0/books/${id}`;
   const response = await axios.delete(deleteURL);
