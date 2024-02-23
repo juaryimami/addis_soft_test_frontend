@@ -4,13 +4,17 @@ import PropTypes from 'prop-types';
 import { editMusicAction, removeMusicAction } from '../../redux/musics/musics';
 
 const Music = ({ title, category, id }) => {
-  const [headerContent, setHeaderContent] = useState('Initial title Text');
+  const [headerContent, setHeaderContent] = useState('ABC');
   const [isEditMode, setIsEditMode] = useState(false);
+  const author = 'UnKnown Artist';
 
   const dispatch = useDispatch();
-
-  const editMusictoStore = (id, title) => {
-    dispatch(editMusicAction(id, title));
+  const newMusic = {
+    headerContent, author, category, id,
+  };
+  const editMusictoStore = (id) => {
+    setIsEditMode(false);
+    dispatch(editMusicAction(id, newMusic));
   };
 
   const removeMusicfromStore = (id) => {
@@ -24,7 +28,7 @@ const Music = ({ title, category, id }) => {
 
         {isEditMode ? (
           <input
-            className="title text-title font-robo font-bold text-xl md:text-2xl"
+            className="border border-blue-500 rounded-md p-4 title text-title font-robo font-bold text-xl md:text-2xl"
             type="text"
             value={headerContent}
             onChange={(e) => setHeaderContent(e.target.value)}
@@ -35,12 +39,11 @@ const Music = ({ title, category, id }) => {
           </p>
         )}
 
-        {/* <p className="title text-title font-robo font-bold text-xl md:text-2xl">{title}</p> */}
         <p className="text-link font-robo font-light md:text-sm mb-4">Unknown Artist</p>
         <button type="button" className="text-link font-robo font-light text-sm pr-2 lg:pr-4 hover:text-blue-900">Comments</button>
         <button type="button" className="text-link font-robo font-light text-sm pr-2 pl-2 lg:pr-4 lg:pl-4 border-r border-l border-gray-200 hover:text-blue-900" onClick={() => removeMusicfromStore(id)}>Remove</button>
         {isEditMode ? (
-          <button type="button" className="text-link font-robo font-light text-sm pr-2 pl-2 lg:pr-4 lg:pl-4 border-r border-l border-gray-200 hover:text-blue-900" onClick={() => editMusictoStore(id, title)}>Save</button>
+          <button type="button" className="text-link font-robo font-light text-sm pr-2 pl-2 lg:pr-4 lg:pl-4 border-r border-l border-gray-200 hover:text-blue-900" onClick={() => editMusictoStore(id)}>Save</button>
         ) : (
           <button type="button" className="text-link font-robo font-light text-sm pr-2 pl-2 lg:pr-4 lg:pl-4 border-r border-l border-gray-200 hover:text-blue-900" onClick={() => setIsEditMode(true)}>Edit</button>
 
